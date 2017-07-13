@@ -64,6 +64,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import okhttp3.Call;
+import okhttp3.ConnectionPool;
 import okhttp3.ConnectionSpec;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -112,6 +113,8 @@ public class PushServiceSocket {
   private final CredentialsProvider           credentialsProvider;
   private final String                        userAgent;
   private final SecureRandom                  random;
+
+  private final ConnectionPool connectionPool = new ConnectionPool(32, 5, TimeUnit.SECONDS);
 
   public PushServiceSocket(SignalServiceUrl[] serviceUrls, CredentialsProvider credentialsProvider, String userAgent) {
     try {
@@ -616,7 +619,8 @@ public class PushServiceSocket {
       OkHttpClient.Builder okHttpClientBuilder = new OkHttpClient.Builder()
           .sslSocketFactory(context.getSocketFactory(), (X509TrustManager)trustManagers[0])
           .connectTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
-          .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS);
+          .readTimeout(soTimeoutMillis, TimeUnit.MILLISECONDS)
+          .connectionPool(connectionPool);
 
       Request.Builder request = new Request.Builder();
       request.url(String.format("%s%s", url, urlFragment));

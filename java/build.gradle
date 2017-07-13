@@ -10,6 +10,7 @@ group               = group_info
 repositories {
     mavenCentral()
     mavenLocal()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -18,7 +19,8 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.5.0'
 
     compile "org.whispersystems:signal-protocol-java:${signal_version}"
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
+
     compile 'org.apache.httpcomponents:httpclient:4.4'
 
     testCompile 'junit:junit:3.8.2'
